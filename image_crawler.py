@@ -1,8 +1,8 @@
 """
-@Author: Sun Suibin 
-@Date: 2018-11-12 21:33:08 
-@Last Modified by:   Sun Suibin 
-@Last Modified time: 2018-11-12 21:33:08 
+@Author: Sun Suibin
+@Date: 2018-11-12 21:33:08
+@Last Modified by:   Sun Suibin
+@Last Modified time: 2018-11-12 21:33:08
 """
 
 from icrawler.builtin import GoogleImageCrawler
