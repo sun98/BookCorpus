@@ -8,4 +8,4 @@
 from icrawler.builtin import GoogleImageCrawler
 
 google_crawler = GoogleImageCrawler(storage={'root_dir': 'images'})
-google_crawler.crawl(keyword='dodo', max_num=100, min_size=(200, 200))
+google_crawler.crawl(keyword='dodo', max_num=10, min_size=(200, 200))

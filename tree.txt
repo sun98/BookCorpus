@@ -1,0 +1,21 @@
+.
+├── README.md
+├── app
+│   ├── run.py
+│   ├── static
+│   └── templates
+├── chapter_slicer
+│   └── run.py
+├── config.py
+├── data
+│   ├── books
+│   └── images
+├── entity_analyzer
+│   └── run.py
+├── image_crawler
+│   ├── image_crawler.py
+│   └── run.py
+├── requirements.txt
+└── tree.txt
+
+9 directories, 9 files
