@@ -9,12 +9,10 @@ from multiprocessing.pool import Pool
 from urllib import request
 
 def FindChapter(content):
-    pattern = re.compile('<h[12345]>\n?.+\n?</h[12345]>')
-    s = re.search(pattern, content)
-    if s == None:
+    pattern = re.split('<h[12345]>\n?.+\n?</h[12345]>',content)
+    if len(pattern)<=2:
         return "None"
-    span = s.span()
-    return span
+    return pattern
 
 if __name__ == "__main__":
     f = open('tag.json')
