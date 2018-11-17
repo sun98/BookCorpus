@@ -54,6 +54,22 @@ def seperate(soup_list):
                 else:
                     new = True
                     cpt_name.insert(0, soup.text.strip())
+                    if ind == len(soup_list) - 1:
+                        cpt_text = '\n'.join(tmp_cpt)
+                        if len(tmp_cpt) > 5 and len(cpt_text) > 1000:
+                            chapters.insert(0, cpt_text)
+                            if len(cpt_name) == 1:
+                                cpt_names.insert(0, cpt_name[0].strip())
+                            else:
+                                cpt_name_string = ''
+                                for name in cpt_name:
+                                    if 'chapter' not in name.lower() and len(name) > 5:
+                                        cpt_name_string += (name + ' ')
+                                cpt_names.insert(0, cpt_name_string.strip())
+                            tmp_cpt = []
+                            cpt_count += 1
+                            new = False
+                            cpt_name = []
 
     return cpt_names, chapters
 
