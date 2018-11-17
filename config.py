@@ -8,5 +8,9 @@
 from os import path
 
 ROOT_DIR = path.dirname(path.abspath(__file__))
-BOOK_DIR = path.join(ROOT_DIR, "books")
-IMAGE_DIR = path.join(ROOT_DIR, "images")
+DATA_DIR = path.join(ROOT_DIR, 'data')
+
+BOOK_DIR = path.join(DATA_DIR, "books")
+BOOK_SA_DIR = path.join(DATA_DIR, 'book_samples')
+IMAGE_DIR = path.join(DATA_DIR, "images")
+CHAPTER_DIR = path.join(DATA_DIR, 'chapters')
