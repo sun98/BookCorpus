@@ -6,6 +6,7 @@
 """
 import json
 import os
+import multiprocessing as mp
 
 from bs4 import BeautifulSoup as bs
 
@@ -19,14 +20,33 @@ def seperate(soup_list):
     soup_list.reverse()
     cpt_count, tmp_cpt, cpt_seq, new = 0, [], [], False
     cpt_name = []
+    cpt_seq_type = 0
     for ind, soup in enumerate(soup_list):
         if soup.name == 'p':
             if new:
                 cpt_text = '\n'.join(tmp_cpt)
-                if len(tmp_cpt) > 5 and len(cpt_text) > 1000:
+                if len(cpt_text) > 1000:
                     chapters.insert(0, cpt_text)
-                    if len(cpt_name) == 1:
-                        cpt_names.insert(0, cpt_name[0].strip())
+                    if cpt_seq_type == 0:
+                        if len(cpt_name) == 1:
+                            if 'chapter' in cpt_name[-1].lower():
+                                cpt_seq_type = 1
+                            else:
+                                cpt_seq_type = 3
+                            cpt_names.insert(0, cpt_name[-1].strip())
+                        else:
+                            cpt_name_string = ''
+                            for name in cpt_name:
+                                if 'chapter' not in name.lower() and len(name) > 5:
+                                    cpt_name_string += (name + ' ')
+                            cpt_names.insert(0, cpt_name_string.strip())
+                            cpt_seq_type = 2
+                        # print(cpt_seq_type)
+                    elif cpt_seq_type == 3:
+                        cpt_names.insert(0, cpt_name[-1].strip())
+                    elif cpt_seq_type == 1:
+                        if 'chapter' in cpt_name[-1].lower():
+                            cpt_names.insert(0, cpt_name[-1].strip())
                     else:
                         cpt_name_string = ''
                         for name in cpt_name:
@@ -39,6 +59,7 @@ def seperate(soup_list):
                     cpt_name = []
                 else:
                     tmp_cpt = []
+                    cpt_name = []
                     new = False
             tmp_cpt.insert(0, soup.text.strip())
         else:
@@ -54,22 +75,27 @@ def seperate(soup_list):
                 else:
                     new = True
                     cpt_name.insert(0, soup.text.strip())
-                    if ind == len(soup_list) - 1:
-                        cpt_text = '\n'.join(tmp_cpt)
-                        if len(tmp_cpt) > 5 and len(cpt_text) > 1000:
-                            chapters.insert(0, cpt_text)
-                            if len(cpt_name) == 1:
-                                cpt_names.insert(0, cpt_name[0].strip())
-                            else:
-                                cpt_name_string = ''
-                                for name in cpt_name:
-                                    if 'chapter' not in name.lower() and len(name) > 5:
-                                        cpt_name_string += (name + ' ')
-                                cpt_names.insert(0, cpt_name_string.strip())
-                            tmp_cpt = []
-                            cpt_count += 1
-                            new = False
-                            cpt_name = []
+    if new:
+        cpt_text = '\n'.join(tmp_cpt)
+        if len(cpt_text) > 1000:
+            chapters.insert(0, cpt_text)
+            if cpt_seq_type == 3:
+                cpt_names.insert(0, cpt_name[-1].strip())
+            elif cpt_seq_type == 1:
+                if 'chapter' in cpt_name[-1].lower():
+                    cpt_names.insert(0, cpt_name[-1].strip())
+                else:
+                    chapters = chapters[1:]
+            else:
+                cpt_name_string = ''
+                for name in cpt_name:
+                    if 'chapter' not in name.lower() and len(name) > 5:
+                        cpt_name_string += (name + ' ')
+                cpt_names.insert(0, cpt_name_string.strip())
+            tmp_cpt = []
+            cpt_count += 1
+            new = False
+            cpt_name = []
 
     return cpt_names, chapters
 
@@ -143,14 +169,18 @@ def filter_book_list(tag_file, new_tag_file):
 
 if __name__ == '__main__':
     # filter_book_list(os.path.join(DATA_DIR, 'tag.json'), os.path.join(DATA_DIR, 'tag_filtered.json'))
-    sample_dir = BOOK_DIR
+    book_dir = BOOK_DIR
     tag_file = os.path.join(DATA_DIR, 'tag_filtered.json')
     blacklist = os.path.join(DATA_DIR, 'blacklist.json')
 
     sample_books = [f'f{x}.html' for x in json.load(open(tag_file, 'r'))][:]
     black_books = json.load(open(blacklist, 'r'))
-    for book in sample_books:
-        if book not in black_books:
-            slicer(os.path.join(sample_dir, book))
+    with mp.Pool() as pool:
+        for book in sample_books:
+            if book not in black_books:
+                # if book == 'f471.html':
+                pool.apply_async(slicer, args=(os.path.join(book_dir, book),))
         # break
+        pool.close()
+        pool.join()
     pass
