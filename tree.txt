@@ -1,21 +1,36 @@
 .
 ├── README.md
 ├── app
+│   ├── __init__.py
 │   ├── run.py
 │   ├── static
 │   └── templates
 ├── chapter_slicer
-│   └── run.py
+│   ├── __init__.py
+│   ├── import_helper.py
+│   ├── run_wjw.py
+│   └── slicer.py
 ├── config.py
 ├── data
+│   ├── book_samples
 │   ├── books
-│   └── images
+│   ├── chapters
+│   ├── chapters_11_17_22_54.zip
+│   ├── images
+│   ├── tag.json
+│   ├── tag_filtered.json
+│   ├── blacklist.json
+│   └── raw_data.tar
 ├── entity_analyzer
+│   ├── __init__.py
+│   ├── import_helper.py
 │   └── run.py
 ├── image_crawler
+│   ├── __init__.py
 │   ├── image_crawler.py
+│   ├── import_helper.py
 │   └── run.py
 ├── requirements.txt
 └── tree.txt
 
-9 directories, 9 files
+11 directories, 19 files

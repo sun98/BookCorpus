@@ -1,4 +1,13 @@
-data/
+*.tar
+*.zip
+f*.html
+*.json
+!blacklist.json
+!tag.json
+!tag_filtered.json
+*.jpg
+*.png
+*.webp
 .vscode/
 
 # Byte-compiled / optimized / DLL files
