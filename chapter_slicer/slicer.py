@@ -153,7 +153,7 @@ def slicer(_file):
 
 def filter_book_list(tag_file, new_tag_file):
     print(f'start filtering book list')
-    keywords = ['fiction', 'satire', 'stories', 'story', 'history', 'tale']
+    keywords = ['fiction', 'satire', 'stories', 'story', 'history', 'tale', 'literature']
     filtered_tag = {}
     tags = json.load(open(tag_file, 'r'))
     for book in tags:
@@ -168,16 +168,17 @@ def filter_book_list(tag_file, new_tag_file):
 
 
 if __name__ == '__main__':
-    # filter_book_list(os.path.join(DATA_DIR, 'tag.json'), os.path.join(DATA_DIR, 'tag_filtered.json'))
+    filter_book_list(os.path.join(DATA_DIR, 'tag.json'), os.path.join(DATA_DIR, 'tag_filtered.json'))
     book_dir = BOOK_DIR
     tag_file = os.path.join(DATA_DIR, 'tag_filtered.json')
     blacklist = os.path.join(DATA_DIR, 'blacklist.json')
 
     sample_books = [f'f{x}.html' for x in json.load(open(tag_file, 'r'))][:]
     black_books = json.load(open(blacklist, 'r'))
+    sliced_books = [f'f{x.split(".")[0]}.html' for x in os.listdir(CHAPTER_DIR)]
     with mp.Pool() as pool:
         for book in sample_books:
-            if book not in black_books:
+            if book not in black_books and book not in sliced_books:
                 # if book == 'f471.html':
                 pool.apply_async(slicer, args=(os.path.join(book_dir, book),))
         # break
