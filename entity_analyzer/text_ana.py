@@ -6,6 +6,20 @@ import matplotlib.pyplot as plt
 import re
 from nltk.stem.wordnet import WordNetLemmatizer
 import collections
+import math
+import time
+
+def isNoise(token):
+    min_token_length = 2
+    is_noise = True
+    if re.match(r'^NN', token.tag_) or re.match(r'^RB', token.tag_) or token.tag_ == 'JJ':
+        is_noise = False
+    
+    if token.is_stop:
+        is_noise = True
+    if len(token.string) <= min_token_length:
+        is_noise = True
+    return is_noise
 
 
 def contain_english(str0):
@@ -28,6 +42,42 @@ def get_wordnet_pos(treebank_tag):
 
 def isv_isn(word):
     return re.match(r'NN*', word) or re.match(r'VB', word)
+
+def cleanup(token, tokenizer, lower=True):
+    if lower:
+        token = token.lower()
+    return ''.join(tokenizer.tokenize(token.strip()))
+
+def text_handler_v2(nlp, text):
+    #t = time.time()
+    tokenizer = nltk.RegexpTokenizer(r'\w+')
+    
+    # nlp = spacy.load("en")
+    # text = text_input.test_para_input()
+    text = text.replace('\n', ' ')  # 去换行符
+    text = text.lower()  # 大写换小写
+    # print(time.time() - t)
+    # print("%%%")
+    #t = time.time()
+    
+    doc = nlp(text)
+    
+    cleaned_list = [(cleanup(word.lemma_, tokenizer)) for word in doc if not isNoise(word)]
+    # print(cleaned_list)
+    # print(time.time() - t)
+    # print("%%%")
+    # t = time.time()
+    # for item in cleaned_list0:
+    #     print(item)
+    # labels = [(w, w.label_) for w in document.ents]
+    # for item in cleaned_list:
+    #     print(item)
+    return word_count_v2(cleaned_list)
+
+def text_handler_v3():
+    # for item in doc.noun_chunks:
+    #     print(item.text, item.root.dep_)
+    pass
 
 
 def text_handler_v1(text):
@@ -89,3 +139,36 @@ def word_count(text):
     # print(result)
     return result
 # word_count(text_handler())
+
+
+def word_count_v2(text):
+    # print(text)
+    
+    c = collections.Counter(text)
+    result = {}
+    for letter, count in c.most_common():  # 提取数量前五
+        result[letter] = count
+    # for key, item in result.items():
+    #     print(key, item)
+    return result
+
+
+def cal_tf_idf(count_set):
+    temp_dir = {}
+    r = []
+    for cpt in count_set:
+        for word in cpt.keys():
+            count = 0
+            if word not in temp_dir.keys():
+                for inner_cpt in count_set:
+                    if word in inner_cpt.keys():
+                        count += 1
+                temp_dir[word] = count
+            else:
+                count = temp_dir[word]
+            cpt[word] = math.log((len(count_set) / count), math.e) * cpt[word]
+    for item in count_set:
+        # print(sorted(item.items(), key=lambda x: x[1], reverse=True)[0:5])
+        r.append(sorted(item.items(), key=lambda x: x[1], reverse=True)[0:4])
+    
+    return r
