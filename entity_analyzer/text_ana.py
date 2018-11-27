@@ -12,7 +12,8 @@ import time
 def isNoise(token):
     min_token_length = 2
     is_noise = True
-    if re.match(r'^NN', token.tag_) or re.match(r'^RB', token.tag_) or token.tag_ == 'JJ':
+    if re.match(r'^NN', token.tag_):
+        #or re.match(r'^RB', token.tag_) or token.tag_ == 'JJ':
         is_noise = False
     
     if token.is_stop:
