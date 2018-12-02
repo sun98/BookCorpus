@@ -26,19 +26,19 @@ def book_mp():
 
 
 def book_dir_cont(book_name):
-    #t = time.time()
+    # t = time.time()
     with open(os.path.join(input_dir, book_name), 'r') as file:
         book = json.load(file)
     # pool.apply_async(self.book_dir_cont, args=book)
-    #print(time.time() - t)
-    t = time.time()
+    # print(time.time() - t)
+    # t = time.time()
     # book_dir = self.book_dir_cont(book)
     book_dir = {}
     book_count = []
     book_temp = []
     nlp = spacy.load("en")
-    #print(time.time() - t)
-    t = time.time()
+    # print(time.time() - t)
+    # t = time.time()
     for key, value in book.items():
         cpt_dir = {}
         cpt_name = value['cpt_name']
@@ -59,16 +59,15 @@ def book_dir_cont(book_name):
     # cpt_dir['cpt_key'] = result
     # book_dir[key] = cpt_dir
     # break
-    #print(time.time() - t)
+    # print(time.time() - t)
     # t = time.time()
     with open(os.path.join(output_dir, book_name), "w") as outfile:
-        json.dump(book_dir, outfile)
-        print( book_name," done")
-    #print(time.time() - t)
-    t = time.time()
+        json.dump(book_dir, outfile, indent=2)
+        print(book_name, " done")
+    # print(time.time() - t)
+    # t = time.time()
 
 # return book_dir
-
 
 
 if __name__ == '__main__':

@@ -5,9 +5,7 @@ f*.html
 !blacklist.json
 !tag.json
 !tag_filtered.json
-*.jpg
-*.png
-*.webp
+data/images/
 .vscode/
 
 # Byte-compiled / optimized / DLL files
