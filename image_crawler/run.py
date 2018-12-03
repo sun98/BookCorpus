@@ -5,13 +5,15 @@
 @Last Modified time: 2018-11-25 19:11:04
 """
 
-import import_helper
-import logging
-import os
 import json
+import logging
 import multiprocessing as mp
-# from icrawler.builtin import BingImageCrawler
-from config import ENTITY_DIR, DATA_DIR, IMAGE_DIR, ROOT_DIR
+import os
+
+import import_helper
+from icrawler.builtin import BingImageCrawler
+from config import DATA_DIR, ENTITY_DIR, IMAGE_DIR, ROOT_DIR
+
 # from image_crawler import PrefixImageDownloader
 
 
@@ -25,30 +27,39 @@ def crawl_book(book, tag, add):
             entity = entity[0]
             outpath = os.path.join(IMAGE_DIR, num, entity)
             if entity not in crawled and not os.path.exists(outpath) or add and len(os.listdir(outpath)) == 0:
-
-                cmd = os.popen(
-                    f'python {os.path.join(ROOT_DIR,"image_crawler","bbid.py")} -s "illustration {entity} {title}" -o "{outpath}" --limit 4')
-                print(cmd.read())
-                cmd.close()
+                title = title.replace('"', '').replace("'", '')
+                keyword = f"illustration {entity} {title}"
+                # command = f'python {os.path.join(ROOT_DIR,"image_crawler","bbid.py")} -s "illustration {entity} {title}" -o "{outpath}" --limit 4' if not add else f'python {os.path.join(ROOT_DIR,"image_crawler","bbid.py")} -s "{entity} in {title}" -o "{outpath}" --limit 4'
+                # cmd = os.popen(command)
+                # cmd.read()
+                # cmd.close()
                 # print(f'book {num}, entity \'{entity}\' crawled.')
                 # break
+                bing_crawler = BingImageCrawler(storage={'root_dir': outpath})
+                bing_crawler.crawl(keyword=keyword, max_num=2)
             else:
-                print(f'{entity} passed.')
+                # print(f'{entity} passed.')
                 continue
         # break
-    print(f'=====================book {num}, \'{title}\' finished.=======================')
+    print(f'==book {num}, \'{title}\' finished.==')
 
 
-def crawl():
+def crawl(addition):
     os.chdir(ROOT_DIR)
     tag = json.load(open(os.path.join(DATA_DIR, 'tag_filtered.json'), 'r'))
     books = os.listdir(ENTITY_DIR)
-    with mp.Pool(processes=4) as pool:
+    exist_books = os.listdir(IMAGE_DIR)
+    if addition:
+        print(len(exist_books))
+    with mp.Pool(processes=12) as pool:
         for book in books:
-            pool.apply_async(crawl_book, args=(book, tag, True))
+            if addition and book.split('.')[0] in exist_books:
+                pool.apply_async(crawl_book, args=(book, tag, addition))
+            else:
+                pool.apply_async(crawl_book, args=(book, tag, addition))
         pool.close()
         pool.join()
 
 
 if __name__ == '__main__':
-    crawl()
+    crawl(True)

@@ -6,6 +6,7 @@ f*.html
 !tag.json
 !tag_filtered.json
 data/images/
+app/db_config.py
 .vscode/
 
 # Byte-compiled / optimized / DLL files
@@ -122,3 +123,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+app/db_config.py
