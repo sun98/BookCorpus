@@ -23,7 +23,7 @@ def crawl_book(book, tag, add):
     entities = json.load(open(os.path.join(ENTITY_DIR, book), 'r'))
     crawled = set()
     for cpt in entities:
-        for entity in entities[cpt]['cpt_key']:
+        for entity in entities[cpt]['cpt_key'][:2]:
             entity = entity[0]
             outpath = os.path.join(IMAGE_DIR, num, entity)
             if entity not in crawled and not os.path.exists(outpath) or add and len(os.listdir(outpath)) == 0:

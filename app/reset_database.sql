@@ -13,31 +13,36 @@ create table book
     release_date date,
     price float,
     copyright varchar(128),
+    burl varchar(1024),
     primary key(book_id)
 );
 
 -- chapter
 create table chapter
 (
-    book_id int not null unique,
-    cpt_num int not null unique,
-    primary key(book_id, cpt_num)
+    book_id int not null,
+    cpt_num int not null,
+    cpt_title varchar(128),
+    primary key(book_id, cpt_num),
+    foreign key(book_id) references book(book_id)
 );
 
 -- entity
 create table entity
 (
-    book_id int not null unique,
+    book_id int not null,
     ent_name varchar(64) not null,
-    primary key(book_id,ent_name)
+    primary key(book_id,ent_name),
+    foreign key(book_id) references book(book_id)
 );
 
 -- image
 create table image
 (
     image_id int not null unique auto_increment,
-    book_id int not null unique,
+    book_id int not null,
     ent_name varchar(64) not null,
+    iurl varchar(1024),
     primary key(image_id),
     foreign key(book_id) references book(book_id)
 );
@@ -45,16 +50,19 @@ create table image
 -- cpt_ent
 CREATE TABLE cpt_ent
 (
-    book_id int not null unique,
-    cpt_num int not null unique,
+    book_id int not null,
+    cpt_num int not null,
     ent_name varchar(64) not null,
-    PRIMARY KEY(book_id,cpt_num,ent_name)
+    PRIMARY KEY(book_id,cpt_num,ent_name),
+    foreign key(book_id) references book(book_id)
 );
 
 -- image_cpt
 CREATE TABLE image_cpt(
-    image_id int not null unique auto_increment,
-    book_id int not null unique,
-    cpt_num int not null unique,
-    primary KEY(image_id, book_id, cpt_num)
+    image_id int not null auto_increment,
+    book_id int not null,
+    cpt_num int not null,
+    primary KEY(image_id, book_id, cpt_num),
+    foreign key(book_id) references book(book_id),
+    foreign key(image_id) references image(image_id)
 )

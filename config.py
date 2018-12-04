@@ -9,6 +9,7 @@ from os import path
 
 ROOT_DIR = path.dirname(path.abspath(__file__))
 DATA_DIR = path.join(ROOT_DIR, 'data')
+APP_DIR = path.join(ROOT_DIR, 'app')
 
 BOOK_DIR = path.join(DATA_DIR, "books")
 BOOK_SA_DIR = path.join(DATA_DIR, 'book_samples')
