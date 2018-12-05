@@ -51,7 +51,7 @@ def crawl(addition):
     exist_books = os.listdir(IMAGE_DIR)
     if addition:
         print(len(exist_books))
-    with mp.Pool(processes=6) as pool:
+    with mp.Pool(processes=12) as pool:
         for book in books:
             if addition and book.split('.')[0] in exist_books:
                 pool.apply_async(crawl_book, args=(book, tag, addition))

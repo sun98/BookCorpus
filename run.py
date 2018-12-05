@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 from wtforms import BooleanField, Form, IntegerField, TextField, validators
 
 from app.db_config import DB_HOST, DB_NAME, DB_PW, DB_USER
-from app.db_query import query_book_by_name_title, query_image_by_title_cptnum, query_image_by_bookid_cpt_num, query_image_by_word, query_image_by_title_word, query_image_by_title_cpttitle
+from app.db_query import query_book_by_name_author, query_image_by_title_cptnum, query_image_by_bookid_cpt_num, query_image_by_word, query_image_by_title_word, query_image_by_title_cpttitle
 
 app = Flask(__name__)
 
@@ -61,7 +61,7 @@ def book():
     pic_form3 = FindPicByWord()
     pic_form4 = FindPicByTitleCptTitle()
     if request.method == 'POST' and book_form.validate():
-        book_result = query_book_by_name_title(book_form.title.data, book_form.author.data)
+        book_result, time_cost = query_book_by_name_author(book_form.title.data, book_form.author.data)
         print(len(book_result))
         book_result = [list(x) for x in book_result]
         for i in range(len(book_result)):
@@ -80,7 +80,7 @@ def pic1():
     pic_form3 = FindPicByWord()
     pic_form4 = FindPicByTitleCptTitle()
     if request.method == 'POST' and pic_form1.validate():
-        pic_result1 = query_image_by_title_cptnum(pic_form1.title.data, pic_form1.cpt_num.data)
+        pic_result1, time_cost = query_image_by_title_cptnum(pic_form1.title.data, pic_form1.cpt_num.data)
         print(len(pic_result1))
         pic_result1 = [list(x) for x in pic_result1]
         for i in range(len(pic_result1)):
@@ -99,7 +99,7 @@ def pic2():
     pic_form3 = FindPicByWord()
     pic_form4 = FindPicByTitleCptTitle()
     if request.method == 'POST' and pic_form2.validate():
-        pic_result2 = query_image_by_bookid_cpt_num(pic_form2.bid.data, pic_form2.cpt_num.data)
+        pic_result2, time_cost = query_image_by_bookid_cpt_num(pic_form2.bid.data, pic_form2.cpt_num.data)
         print(len(pic_result2))
         pic_result2 = [list(x) for x in pic_result2]
         for i in range(len(pic_result2)):
@@ -119,9 +119,9 @@ def pic3():
     pic_form4 = FindPicByTitleCptTitle()
     if request.method == 'POST' and pic_form3.validate():
         if pic_form3.title.data is None:
-            pic_result3 = query_image_by_word(pic_form3.word.data)
+            pic_result3, time_cost = query_image_by_word(pic_form3.word.data)
         else:
-            pic_result3 = query_image_by_title_word(pic_form3.title.data, pic_form3.word.data)
+            pic_result3, time_cost = query_image_by_title_word(pic_form3.title.data, pic_form3.word.data)
         print(len(pic_result3))
         pic_result3 = [list(x) for x in pic_result3]
         for i in range(len(pic_result3)):
@@ -140,7 +140,7 @@ def pic4():
     pic_form3 = FindPicByWord()
     pic_form4 = FindPicByTitleCptTitle(request.form)
     if request.method == 'POST' and pic_form4.validate():
-        pic_result4 = query_image_by_title_cpttitle(pic_form4.title.data, pic_form4.cpt_title.data)
+        pic_result4, time_cost = query_image_by_title_cpttitle(pic_form4.title.data, pic_form4.cpt_title.data)
         print(len(pic_result4))
         pic_result4 = [list(x) for x in pic_result4]
         for i in range(len(pic_result4)):
