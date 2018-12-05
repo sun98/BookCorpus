@@ -15,6 +15,31 @@
         {{book_form.author.label}}:{{book_form.author(size=32)}}
         <input type="submit" value="Go">
     </form>
+
+    <form method="POST" action="{{url_for('pic1')}}">
+        {{pic_form1.title.label}}:{{pic_form1.title(size=32)}}
+        {{pic_form1.cpt_num.label}}:{{pic_form1.cpt_num(size=32)}}
+        <input type="submit" value="Go">
+    </form>
+
+    <form method="POST" action="{{url_for('pic2')}}">
+        {{pic_form2.bid.label}}:{{pic_form2.bid(size=32)}}
+        {{pic_form2.cpt_num.label}}:{{pic_form2.cpt_num(size=32)}}
+        <input type="submit" value="Go">
+    </form>
+
+    <form method="POST" action="{{url_for('pic3')}}">
+        {{pic_form3.word.label}}:{{pic_form3.word(size=32)}}
+        {{pic_form3.title.label}}:{{pic_form3.title(size=32)}}
+        <input type="submit" value="Go">
+    </form>
+
+    <form method="POST" action="{{url_for('pic4')}}">
+        {{pic_form4.title.label}}:{{pic_form4.title(size=32)}}
+        {{pic_form4.cpt_title.label}}:{{pic_form4.cpt_title(size=32)}}
+        <input type="submit" value="Go">
+    </form>
+
     {% if book_result %}
     <table border="1">
         <tr>
@@ -41,55 +66,67 @@
         {% endfor %}
     </table>
     {% endif %}
-    <form method="POST" action="{{url_for('pic1')}}">
-        {{pic_form1.title.label}}:{{pic_form1.title(size=32)}}
-        {{pic_form1.cpt_num.label}}:{{pic_form1.cpt_num(size=32)}}
-        <input type="submit" value="Go">
-    </form>
+
     {% if pic_result1 %}
-    <div id="main">
-        {% for pic in pic_result1 %}
-        <div class="box">
-            <div class="wrapper">
-                <div class="pic"><img src={{pic[-1]}}></div>
-                <div class="text">{{pic[:-1]}}</div>
-            </div>
+    <p>{{pic_result1|length}} images found.</p>
+    {% if pic_result1|length < 6 %} {% for pic in pic_result1 %} <div class="box">
+        <div class="wrapper">
+            <div class="pic"><img src={{pic[-1]}}></div>
+            <div class="text">{{pic[:-1]}}</div>
+        </div>
         </div>
         {% endfor %}
-    </div>
-    {% endif %}
-    <form method="POST" action="{{url_for('pic2')}}">
-        {{pic_form2.bid.label}}:{{pic_form2.bid(size=32)}}
-        {{pic_form2.cpt_num.label}}:{{pic_form2.cpt_num(size=32)}}
-        <input type="submit" value="Go">
-    </form>
-    {% if pic_result2 %}
-    <div id="main">
-        {% for pic in pic_result2 %}
-        <div class="box">
-            <div class="wrapper">
-                <div class="pic"><img src={{pic[-1]}}></div>
-                <div class="text">{{pic[:-1]}}</div>
+        {% else %}
+        <div id="main">
+            {% for pic in pic_result1 %}
+            <div class="box">
+                <div class="wrapper">
+                    <div class="pic"><img src={{pic[-1]}}></div>
+                    <div class="text">{{pic[:-1]}}</div>
+                </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-    <form method="POST" action="{{url_for('pic3')}}">
-        {{pic_form3.word.label}}:{{pic_form3.word(size=64)}}
-        <input type="submit" value="Go">
-    </form>
-    {% if pic_result3 %}
-    <div id="main">
-        {% for pic in pic_result3 %}
-        <div class="box">
-            <div class="wrapper">
-                <div class="pic"><img src={{pic[-1]}}></div>
-                <div class="text">{{pic[:-1]}}</div>
+        {% endif %}
+        {% endif %}
+
+        {% if pic_result2 %}
+        <div id="main">
+            {% for pic in pic_result2 %}
+            <div class="box">
+                <div class="wrapper">
+                    <div class="pic"><img src={{pic[-1]}}></div>
+                    <div class="text">{{pic[:-1]}}</div>
+                </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-    <!-- <img src="/static/images/3642/cart/000001.jpg"> -->
+        {% endif %}
+
+        {% if pic_result3 %}
+        <div id="main">
+            {% for pic in pic_result3 %}
+            <div class="box">
+                <div class="wrapper">
+                    <div class="pic"><img src={{pic[-1]}}></div>
+                    <div class="text">{{pic[:-1]}}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if pic_result4 %}
+        <div id="main">
+            {% for pic in pic_result4 %}
+            <div class="box">
+                <div class="wrapper">
+                    <div class="pic"><img src={{pic[-1]}}></div>
+                    <div class="text">{{pic[:-1]}}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <!-- <img src="/static/images/3642/cart/000001.jpg"> -->
 </body>

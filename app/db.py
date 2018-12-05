@@ -13,7 +13,7 @@ from datetime import datetime
 import pymysql
 
 import import_helper
-from config import APP_DIR, BOOK_DIR, DATA_DIR
+from config import APP_DIR, BOOK_DIR, DATA_DIR, IMAGE_DIR
 from db_config import DB_HOST, DB_NAME, DB_PW, DB_USER
 
 
@@ -99,14 +99,18 @@ def insert_entity(db, cursor):
             book_path = os.path.join(ent_path, book)
             entities = json.load(open(book_path, 'r'))
             bid = int(book.split('.')[0])
-            ent_set = set()
             for cpt in entities:
+                ent_set = set()
                 ents = entities[cpt]['cpt_key']
+                cpt_num = int(entities[cpt]['key_name'])+1
                 for ent in ents:
                     ent_name = unicode(ent[0].replace('\u017f', 's').replace('\u00e6', 'ae')).lower()
                     ent_set.add(ent_name)
-            for ent in ent_set:
-                cursor.execute('insert into entity(book_id,ent_name) values(%s,%s)', (bid, ent))
+                for ent in ent_set:
+                    try:
+                        cursor.execute('insert into entity(book_id,ent_name,cpt_num) values(%s,%s,%s)', (bid, ent, cpt_num))
+                    except pymysql.err.IntegrityError:
+                        pass
         db.commit()
     except Exception as e:
         print('Exception occured in "insert entity", DB will rollback')
@@ -144,35 +148,66 @@ def insert_cpt_ent(db, cursor):
 
 
 def insert_image(db, cursor):
-    img_path = os.path.join(DATA_DIR, 'images')
-    books = os.listdir(img_path)
+    # img_path = os.path.join(DATA_DIR, 'images')
+    # books = os.listdir(img_path)
+    # try:
+    #     count = 1
+    #     print()
+    #     for book in books:
+    #         print(f'\rinsert image {str(count).ljust(6)}/{len(books)}', end='')
+    #         count += 1
+    #         book_path = os.path.join(img_path, book)
+    #         try:
+    #             entities = os.listdir(book_path)
+    #         except NotADirectoryError:
+    #             continue
+    #         bid = int(book)
+    #         for entity in entities:
+    #             ent_path = os.path.join(book_path, entity)
+    #             for img in os.listdir(ent_path):
+    #                 cursor.execute('insert into image(image_id,book_id,ent_name,iurl) values(%s,%s,%s,%s)',
+    #                                (None, bid, entity, os.path.join(ent_path, img)))
+    #     db.commit()
+    # except Exception as e:
+    #     print('Exception occured in "insert image", DB will rollback')
+    #     print(book, entity)
+    #     db.rollback()
+    #     raise e
+    ent_path = os.path.join(DATA_DIR, 'entities')
+    books = os.listdir(ent_path)
     try:
         count = 1
         print()
         for book in books:
             print(f'\rinsert image {str(count).ljust(6)}/{len(books)}', end='')
             count += 1
-            book_path = os.path.join(img_path, book)
-            try:
-                entities = os.listdir(book_path)
-            except NotADirectoryError:
-                continue
-            bid = int(book)
-            for entity in entities:
-                ent_path = os.path.join(book_path, entity)
-                for img in os.listdir(ent_path):
-                    cursor.execute('insert into image(image_id,book_id,ent_name,iurl) values(%s,%s,%s,%s)',
-                                   (None, bid, entity, os.path.join(ent_path, img)))
+            book_path = os.path.join(ent_path, book)
+            entities = json.load(open(book_path, 'r'))
+            bid = int(book.split('.')[0])
+            for cpt in entities:
+                ent_set = set()
+                ents = entities[cpt]['cpt_key']
+                cpt_num = int(entities[cpt]['key_name']) + 1
+                for ent in ents:
+                    ent_name = unicode(ent[0].replace('\u017f', 's').replace('\u00e6', 'ae')).lower()
+                    ent_set.add(ent_name)
+                for ent in ent_set:
+                    img_folder = os.path.join(IMAGE_DIR, str(bid), ent)
+                    if not os.path.exists(img_folder):
+                        continue
+                    for img in os.listdir(img_folder):
+                        cursor.execute('insert into image(image_id,book_id,ent_name,cpt_num,iurl) values(%s,%s,%s,%s,%s)',
+                                       (None, bid, ent, cpt_num, os.path.join(img_folder, img)))
         db.commit()
     except Exception as e:
         print('Exception occured in "insert image", DB will rollback')
-        print(book, entity)
+        print(book, ent)
         db.rollback()
         raise e
 
 
 def insert_image_cpt(db, cursor):
-    sql_cmd = '''insert into image_cpt(image_id,book_id,cpt_num) select image_id,image.book_id,cpt_ent.cpt_num from image natural left join cpt_ent'''
+    sql_cmd = '''insert into image_cpt(image_id,book_id,cpt_num) select image_id,image.book_id,cpt_ent.cpt_num from image natural left join cpt_ent;'''
     try:
         cursor.execute(sql_cmd)
         print('image_cpt inserted')
@@ -183,14 +218,14 @@ def insert_image_cpt(db, cursor):
 
 
 def insert_all():
-    db = pymysql.connect(DB_HOST, DB_USER, DB_PW, DB_NAME)
+    db = pymysql.connect(DB_HOST, DB_USER, DB_PW, DB_NAME[2])
     cursor = db.cursor()
 
-    # insert_book(db, cursor)
-    # insert_chapter(db, cursor)
-    # insert_entity(db, cursor)
+    insert_book(db, cursor)
+    insert_chapter(db, cursor)
+    insert_entity(db, cursor)
     # insert_cpt_ent(db, cursor)
-    # insert_image(db, cursor)
+    insert_image(db, cursor)
     # insert_image_cpt(db, cursor)    # may not work
 
     cursor.close()
