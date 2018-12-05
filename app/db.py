@@ -1,8 +1,8 @@
 """
-Author: Sun Suibin
-Date: 2018-12-02 18:31:46
-Last Modified by:   Sun Suibin
-Last Modified time: 2018-12-02 18:31:46
+@Author: Sun Suibin
+@Date: 2018-12-02 18:31:46
+@Last Modified by:   Sun Suibin
+@Last Modified time: 2018-12-02 18:31:46
 """
 
 import json
@@ -102,7 +102,7 @@ def insert_entity(db, cursor):
             ent_set = set()
             for cpt in entities:
                 ents = entities[cpt]['cpt_key']
-                for ent in ents[:2]:
+                for ent in ents:
                     ent_name = unicode(ent[0].replace('\u017f', 's').replace('\u00e6', 'ae')).lower()
                     ent_set.add(ent_name)
             for ent in ent_set:
@@ -130,7 +130,7 @@ def insert_cpt_ent(db, cursor):
             for cpt in entities:
                 ent_set = set()
                 ents = entities[cpt]['cpt_key']
-                for ent in ents[:2]:
+                for ent in ents:
                     ent_name = unicode(ent[0].replace('\u017f', 's').replace('\u00e6', 'ae')).lower()
                     ent_set.add(ent_name)
                 for ent_name in ent_set:
@@ -172,12 +172,10 @@ def insert_image(db, cursor):
 
 
 def insert_image_cpt(db, cursor):
-    sql_cmd = '''insert into image_cpt(image_id,book_id,cpt_num)
-    select image_id,image.book_id,cpt_num
-    from image left natural join cpt_ent
-    on image.book_id=cpt_ent.book_id and image.ent_name=cpt_ent.ent_name;'''
+    sql_cmd = '''insert into image_cpt(image_id,book_id,cpt_num) select image_id,image.book_id,cpt_ent.cpt_num from image natural left join cpt_ent'''
     try:
         cursor.execute(sql_cmd)
+        print('image_cpt inserted')
     except Exception as e:
         print('Exception occured in "insert image_cpt", DB will rollback')
         db.rollback()
@@ -188,13 +186,14 @@ def insert_all():
     db = pymysql.connect(DB_HOST, DB_USER, DB_PW, DB_NAME)
     cursor = db.cursor()
 
-    insert_book(db, cursor)
-    insert_chapter(db, cursor)
-    insert_entity(db, cursor)
-    insert_cpt_ent(db, cursor)
-    insert_image(db, cursor)
-    insert_image_cpt(db, cursor)
+    # insert_book(db, cursor)
+    # insert_chapter(db, cursor)
+    # insert_entity(db, cursor)
+    # insert_cpt_ent(db, cursor)
+    # insert_image(db, cursor)
+    # insert_image_cpt(db, cursor)    # may not work
 
+    cursor.close()
     db.close()
 
 

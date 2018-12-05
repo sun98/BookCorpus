@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=320,user-scalable=0,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css" />
+    <title>Book Corpus !!!</title>
+</head>
+
+<body>
+    <h4><a href="/">Home</a></h4>
+    <form method="POST" action="{{url_for('book')}}">
+        {{book_form.title.label}}:{{book_form.title(size=32)}}
+        {{book_form.author.label}}:{{book_form.author(size=32)}}
+        <input type="submit" value="Go">
+    </form>
+    {% if book_result %}
+    <table border="1">
+        <tr>
+            <td>book id</td>
+            <td>title</td>
+            <td>author</td>
+            <td>subject</td>
+            <td>language</td>
+            <td>release date</td>
+            <td>price$</td>
+            <td>copyrights</td>
+            <td>link</td>
+        </tr>
+        {% for book in book_result %}
+        <tr>
+            {% for i in range(book|length) %}
+            {% if i == book|length -1 %}
+            <td><a href={{book[i]}}>View book</a></td>
+            {% else %}
+            <td>{{book[i]}}</td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <form method="POST" action="{{url_for('pic1')}}">
+        {{pic_form1.title.label}}:{{pic_form1.title(size=32)}}
+        {{pic_form1.cpt_num.label}}:{{pic_form1.cpt_num(size=32)}}
+        <input type="submit" value="Go">
+    </form>
+    {% if pic_result1 %}
+    <div id="main">
+        {% for pic in pic_result1 %}
+        <div class="box">
+            <div class="wrapper">
+                <div class="pic"><img src={{pic[-1]}}></div>
+                <div class="text">{{pic[:-1]}}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <form method="POST" action="{{url_for('pic2')}}">
+        {{pic_form2.bid.label}}:{{pic_form2.bid(size=32)}}
+        {{pic_form2.cpt_num.label}}:{{pic_form2.cpt_num(size=32)}}
+        <input type="submit" value="Go">
+    </form>
+    {% if pic_result2 %}
+    <div id="main">
+        {% for pic in pic_result2 %}
+        <div class="box">
+            <div class="wrapper">
+                <div class="pic"><img src={{pic[-1]}}></div>
+                <div class="text">{{pic[:-1]}}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <form method="POST" action="{{url_for('pic3')}}">
+        {{pic_form3.word.label}}:{{pic_form3.word(size=64)}}
+        <input type="submit" value="Go">
+    </form>
+    {% if pic_result3 %}
+    <div id="main">
+        {% for pic in pic_result3 %}
+        <div class="box">
+            <div class="wrapper">
+                <div class="pic"><img src={{pic[-1]}}></div>
+                <div class="text">{{pic[:-1]}}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <!-- <img src="/static/images/3642/cart/000001.jpg"> -->
+</body>

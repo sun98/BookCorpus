@@ -1,0 +1,35 @@
+* {margin: 0; padding: 0;}
+html, body {width: 100%; height: 100%; background-color: #EDEDED;}
+
+#main {
+  width: 100%;
+  margin: 0 auto;
+  -webkit-column-count: 5;
+  column-count: 5;
+  -webkit-column-gap: 0;
+  column-gap: 0;
+}
+.box {
+  padding: 7px;
+  box-sizing: border-box;
+  width: 256px;
+}
+.wrapper {
+  padding: 5px;
+  background-color: #fff;
+  border: 1px solid #e4e4e4;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, .2);
+}
+.pic {
+  font-size: 0; /*消除行内元素的间隙*/
+}
+.pic img {
+  width: 100%;
+  height: auto;
+}
+.text {
+  color: #999;
+  background: #FAFAFA;
+  font-size: 14px;
+  padding-top: 5px;
+}

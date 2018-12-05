@@ -5,7 +5,7 @@ f*.html
 !blacklist.json
 !tag.json
 !tag_filtered.json
-data/images/
+static/images/
 app/db_config.py
 .vscode/
 
