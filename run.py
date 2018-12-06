@@ -118,10 +118,10 @@ def pic3():
     pic_form3 = FindPicByWord(request.form)
     pic_form4 = FindPicByTitleCptTitle()
     if request.method == 'POST' and pic_form3.validate():
-        if pic_form3.title.data is None:
-            pic_result3, time_cost = query_image_by_word(pic_form3.word.data)
-        else:
-            pic_result3, time_cost = query_image_by_title_word(pic_form3.title.data, pic_form3.word.data)
+        # if pic_form3.title.data is None:
+        #     pic_result3, time_cost = query_image_by_word(pic_form3.word.data)
+        # else:
+        pic_result3, time_cost = query_image_by_title_word(pic_form3.title.data, pic_form3.word.data)
         print(len(pic_result3))
         pic_result3 = [list(x) for x in pic_result3]
         for i in range(len(pic_result3)):

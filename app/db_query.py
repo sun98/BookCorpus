@@ -10,7 +10,7 @@ import time
 
 import pymysql
 
-import import_helper
+# import import_helper
 from app.db_config import DB_HOST, DB_NAME, DB_PW, DB_USER
 
 
@@ -50,23 +50,23 @@ def query_image_by_title_cptnum(title, cpt_num, ver=2):
         select * from image
         where book_id in (
             select book_id from book
-            where title like %s """
+            where cpt_num=%s and title like %s """
         for t in titles[1:]:
             sql_cmd += 'or title like %s'
-        sql_cmd += """) and cpt_num=%s;"""
+        sql_cmd += """);"""
         texts = tuple(f'%{x}%' for x in titles)
         old = time.time()
-        cursor.execute(sql_cmd, texts + (cpt_num,))
+        cursor.execute(sql_cmd, (cpt_num,) + texts)
         total = time.time() - old
     else:
         sql_cmd = """
         select * from image
-        where book_id in (
+        where cpt_num=%s and book_id in (
             select book_id from book
             where match(title) against (%s)
-        ) and cpt_num=%s"""
+        )"""
         old = time.time()
-        cursor.execute(sql_cmd, (f'{title}', cpt_num))
+        cursor.execute(sql_cmd, (cpt_num, f'{title}'))
         total = time.time()-old
     rows = cursor.fetchall()
     cursor.close()
@@ -89,6 +89,7 @@ def query_image_by_bookid_cpt_num(book_id, cpt_num, ver=2):
     return rows, total
 
 
+@DeprecationWarning
 def query_image_by_word(word, ver=2):
     db = pymysql.connect(DB_HOST, DB_USER, DB_PW, DB_NAME[ver])
     cursor = db.cursor()
@@ -97,7 +98,7 @@ def query_image_by_word(word, ver=2):
     select * from image
     where ent_name like %s """
     for w in words[1:]:
-        sql_cmd += 'ent_name like %s '
+        sql_cmd += 'or ent_name like %s '
     texts = tuple(f'%{x}%' for x in words)
     old = time.time()
     cursor.execute(sql_cmd, texts)
