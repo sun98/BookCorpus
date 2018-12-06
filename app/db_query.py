@@ -48,9 +48,9 @@ def query_image_by_title_cptnum(title, cpt_num, ver=2):
         titles = title.strip().split(' ')
         sql_cmd = """
         select * from image
-        where book_id in (
+        where cpt_num=%s and book_id in (
             select book_id from book
-            where cpt_num=%s and title like %s """
+            where title like %s """
         for t in titles[1:]:
             sql_cmd += 'or title like %s'
         sql_cmd += """);"""
