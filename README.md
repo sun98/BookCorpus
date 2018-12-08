@@ -19,3 +19,6 @@
   `$ python3 -u "./app/db.py"`
 
 - If there is import issue in running python files, please check current working directory.
+
+# Run web interface
+In the root folder, run `python3 run.py`.
