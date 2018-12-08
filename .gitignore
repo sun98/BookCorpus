@@ -10,7 +10,6 @@ static/books/
 static/book_samples/
 static/chapters/
 static/entities/
-app/db_config.py
 .vscode/
 
 # Byte-compiled / optimized / DLL files
