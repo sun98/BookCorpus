@@ -21,22 +21,22 @@ class FindBookForm(Form):
 
 
 class FindPicByBookCpt(Form):
-    title = TextField('Fin image by book title', [validators.DataRequired()])
+    title = TextField('Find image by book title', [validators.DataRequired()])
     cpt_num = IntegerField('and chapter index', render_kw={"placeholder": "optional"})
 
 
 class FindPicByIdCpt(Form):
-    bid = IntegerField('Fin image by book id', [validators.DataRequired()])
+    bid = IntegerField('Find image by book id', [validators.DataRequired()])
     cpt_num = IntegerField('and chapter index', render_kw={"placeholder": "optional"})
 
 
 class FindPicByWord(Form):
     title = TextField('and book title', render_kw={"placeholder": "optional"})
-    word = TextField('Fin image by key word', [validators.DataRequired()])
+    word = TextField('Find image by key word', [validators.DataRequired()])
 
 
 class FindPicByTitleCptTitle(Form):
-    title = TextField('Fin image by book title', [validators.DataRequired()])
+    title = TextField('Find image by book title', [validators.DataRequired()])
     cpt_title = TextField('and chapter title', [validators.DataRequired()])
 
 
@@ -66,8 +66,7 @@ def book():
         book_result = [list(x) for x in book_result]
         for i in range(len(book_result)):
             book_result[i][-1] = '/' + '/'.join(book_result[i][-1].replace('\\', '/').split('/')[2:])
-        return render_template('index.html', book_form=book_form, book_result=book_result,
-                               pic_form1=pic_form1, pic_form2=pic_form2, pic_form3=pic_form3, pic_form4=pic_form4)
+        return render_template('index.html', book_form=book_form, book_result=book_result, pic_form1=pic_form1, pic_form2=pic_form2, pic_form3=pic_form3, pic_form4=pic_form4, cost=time_cost)
     flash('输入不合法')
     return redirect('/')
 
@@ -86,7 +85,7 @@ def pic1():
         for i in range(len(pic_result1)):
             pic_result1[i][-1] = '/' + '/'.join(pic_result1[i][-1].replace('\\', '/').split('/')[2:])
         return render_template('index.html', pic_result1=pic_result1, book_form=book_form,
-                               pic_form1=pic_form1, pic_form2=pic_form2, pic_form3=pic_form3, pic_form4=pic_form4)
+                               pic_form1=pic_form1, pic_form2=pic_form2, pic_form3=pic_form3, pic_form4=pic_form4, cost=time_cost)
     flash('输入不合法')
     return redirect('/')
 
@@ -105,7 +104,7 @@ def pic2():
         for i in range(len(pic_result2)):
             pic_result2[i][-1] = '/' + '/'.join(pic_result2[i][-1].replace('\\', '/').split('/')[2:])
         return render_template('index.html', pic_result2=pic_result2, book_form=book_form,
-                               pic_form1=pic_form1, pic_form2=pic_form2, pic_form3=pic_form3, pic_form4=pic_form4)
+                               pic_form1=pic_form1, pic_form2=pic_form2, pic_form3=pic_form3, pic_form4=pic_form4, cost=time_cost)
     flash('输入不合法')
     return redirect('/')
 
@@ -127,7 +126,7 @@ def pic3():
         for i in range(len(pic_result3)):
             pic_result3[i][-1] = '/' + '/'.join(pic_result3[i][-1].replace('\\', '/').split('/')[2:])
         return render_template('index.html', pic_result3=pic_result3, book_form=book_form,
-                               pic_form1=pic_form1, pic_form2=pic_form2, pic_form3=pic_form3, pic_form4=pic_form4)
+                               pic_form1=pic_form1, pic_form2=pic_form2, pic_form3=pic_form3, pic_form4=pic_form4, cost=time_cost)
     flash('输入不合法')
     return redirect('/')
 
@@ -146,7 +145,7 @@ def pic4():
         for i in range(len(pic_result4)):
             pic_result4[i][-1] = '/' + '/'.join(pic_result4[i][-1].replace('\\', '/').split('/')[2:])
         return render_template('index.html', pic_result4=pic_result4, book_form=book_form,
-                               pic_form1=pic_form1, pic_form2=pic_form2, pic_form3=pic_form3, pic_form4=pic_form4)
+                               pic_form1=pic_form1, pic_form2=pic_form2, pic_form3=pic_form3, pic_form4=pic_form4, cost=time_cost)
     flash('输入不合法')
     return redirect('/')
 
@@ -155,4 +154,5 @@ if __name__ == '__main__':
     # app = Flask(__name__)
     # app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{DB_NAME}:{DB_PW}@{DB_HOST}/{DB_NAME}'
     # db = SQLAlchemy(app)
-    app.run(debug=True)
+    # app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

@@ -29,7 +29,8 @@ def get_title_list(db, cursor):
             titles[i] = ' '.join(titles[i].strip().split(' ')[random.randint(0, len(titles[i].strip().split(' ')) - 1):
                                                               random.randint(0, len(titles[i].strip().split(' ')) - 1) + 2])
         elif i < int(4.5/5*MAX_N):
-            titles[i] = ' '.join(titles[i].strip().split(' ')[random.randint(0, int(len(titles[i].strip().split(' ')) / 2 - 1))                                                              : random.randint(int(len(titles[i].strip().split(' ')) / 2), len(titles[i].strip().split(' ')) - 1)])
+            titles[i] = ' '.join(titles[i].strip().split(' ')[random.randint(0, int(len(titles[i].strip().split(' ')) / 2 - 1))
+                                 : random.randint(int(len(titles[i].strip().split(' ')) / 2), len(titles[i].strip().split(' ')) - 1)])
     return titles
 
 
@@ -65,7 +66,8 @@ def get_cpt_title_list(db, cursor):
             cpt_titles[i] = ' '.join(cpt_titles[i].strip().split(' ')[random.randint(0, len(cpt_titles[i].strip().split(' ')) - 1):
                                                                       random.randint(0, len(cpt_titles[i].strip().split(' ')) - 1) + 2])
         elif i < int(4.5/5*MAX_N):
-            cpt_titles[i] = ' '.join(cpt_titles[i].strip().split(' ')[random.randint(0, int(len(cpt_titles[i].strip().split(' ')) / 2 - 1))                                                                      : random.randint(int(len(cpt_titles[i].strip().split(' ')) / 2), len(cpt_titles[i].strip().split(' ')) - 1)])
+            cpt_titles[i] = ' '.join(cpt_titles[i].strip().split(' ')[random.randint(0, int(len(cpt_titles[i].strip().split(' ')) / 2 - 1))
+                                     : random.randint(int(len(cpt_titles[i].strip().split(' ')) / 2), len(cpt_titles[i].strip().split(' ')) - 1)])
     return cpt_titles
 
 
@@ -116,11 +118,13 @@ def single_test():
     print('test for secodary index')
     for ver in [1, 2]:
         costs, length = [], []
-        for i in range(10000):
+        for i in range(100):
             n = random.randint(1, 50000)
-            res, cost = query_image_by_bookid(n, ver)
-            length.append(len(res))
-            costs.append(cost)
+            for j in range(100):
+                m = random.randint(1, 20)
+                res, cost = query_image_by_bookid_cpt_num(n, m, ver)
+                length.append(len(res))
+                costs.append(cost)
         print(f'version {ver}:')
         print(f'\taverage time cost: {np.average(costs)}s')
         print(f'\taverage record number: {np.average(length)}')
@@ -144,5 +148,5 @@ if __name__ == '__main__':
     # print(kws)
     # print(cptts)
 
-    real_test(titles, authors, bids, kws, cptts)
-    # single_test()
+    # real_test(titles, authors, bids, kws, cptts)
+    single_test()

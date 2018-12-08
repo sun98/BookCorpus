@@ -1,11 +1,15 @@
 *.tar
 *.zip
-f*.html
-*.json
+# f*.html
+# *.json
 !blacklist.json
 !tag.json
 !tag_filtered.json
 static/images/
+static/books/
+static/book_samples/
+static/chapters/
+static/entities/
 app/db_config.py
 .vscode/
 

@@ -218,12 +218,12 @@ def insert_image_cpt(db, cursor):
 
 
 def insert_all():
-    db = pymysql.connect(DB_HOST, DB_USER, DB_PW, DB_NAME[1])
+    db = pymysql.connect(DB_HOST, DB_USER, DB_PW, DB_NAME[2])
     cursor = db.cursor()
 
-    # insert_book(db, cursor)
-    # insert_chapter(db, cursor)
-    # insert_entity(db, cursor)
+    insert_book(db, cursor)
+    insert_chapter(db, cursor)
+    insert_entity(db, cursor)
     # insert_cpt_ent(db, cursor)
     insert_image(db, cursor)
     # insert_image_cpt(db, cursor)    # may not work

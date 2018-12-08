@@ -2,35 +2,51 @@
 ├── README.md
 ├── app
 │   ├── __init__.py
-│   ├── run.py
-│   ├── static
-│   └── templates
+│   ├── db.py
+│   ├── db_config.py
+│   ├── db_create_0.sql
+│   ├── db_create_1.sql
+│   ├── db_create_2.sql
+│   ├── db_query.py
+│   ├── db_test.py
+│   └── import_helper.py
 ├── chapter_slicer
 │   ├── __init__.py
 │   ├── import_helper.py
 │   ├── run_wjw.py
 │   └── slicer.py
-├── config.py
-├── data
-│   ├── book_samples
-│   ├── books
-│   ├── chapters
-│   ├── chapters_11_17_22_54.zip
-│   ├── images
-│   ├── tag.json
-│   ├── tag_filtered.json
-│   ├── blacklist.json
-│   └── raw_data.tar
 ├── entity_analyzer
 │   ├── __init__.py
 │   ├── import_helper.py
-│   └── run.py
+│   ├── run.py
+│   ├── text_ana.py
+│   └── text_input.py
 ├── image_crawler
 │   ├── __init__.py
+│   ├── bbid.py
 │   ├── image_crawler.py
 │   ├── import_helper.py
 │   └── run.py
+├── static
+│   ├── blacklist.json
+│   ├── books/
+│   ├── chapters/
+│   ├── css
+│   │   └── index.css
+│   ├── entities/
+│   ├── images/
+│   ├── js
+│   │   └── index.js
+│   ├── chapters.zip
+│   ├── entities.zip
+│   ├── images.zip
+│   ├── raw_data.tar
+│   ├── tag.json
+│   └── tag_filtered.json
+├── templates
+│   └── index.html
+├── config.py
 ├── requirements.txt
+├── run.py
 └── tree.txt
-
-11 directories, 19 files
+8 directories, 35 files

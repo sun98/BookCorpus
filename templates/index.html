@@ -41,6 +41,7 @@
     </form>
 
     {% if book_result %}
+    <p>{{book_result|length}} found, using {{cost}}s.</p>
     <table border="1">
         <tr>
             <td>book id</td>
@@ -68,15 +69,7 @@
     {% endif %}
 
     {% if pic_result1 %}
-    <p>{{pic_result1|length}} images found.</p>
-    {% if pic_result1|length < 6 %} {% for pic in pic_result1 %} <div class="box">
-        <div class="wrapper">
-            <div class="pic"><img src={{pic[-1]}}></div>
-            <div class="text">{{pic[:-1]}}</div>
-        </div>
-        </div>
-        {% endfor %}
-        {% else %}
+        <p>{{pic_result1|length}} found, using {{cost}}s.</p>
         <div id="main">
             {% for pic in pic_result1 %}
             <div class="box">
@@ -87,10 +80,10 @@
             </div>
             {% endfor %}
         </div>
-        {% endif %}
-        {% endif %}
+    {% endif %}
 
-        {% if pic_result2 %}
+    {% if pic_result2 %}
+        <p>{{pic_result2|length}} found, using {{cost}}s.</p>
         <div id="main">
             {% for pic in pic_result2 %}
             <div class="box">
@@ -101,9 +94,10 @@
             </div>
             {% endfor %}
         </div>
-        {% endif %}
+    {% endif %}
 
-        {% if pic_result3 %}
+    {% if pic_result3 %}
+        <p>{{pic_result3|length}} found, using {{cost}}s.</p>
         <div id="main">
             {% for pic in pic_result3 %}
             <div class="box">
@@ -114,9 +108,10 @@
             </div>
             {% endfor %}
         </div>
-        {% endif %}
+    {% endif %}
 
-        {% if pic_result4 %}
+    {% if pic_result4 %}
+        <p>{{pic_result4|length}} found, using {{cost}}s.</p>
         <div id="main">
             {% for pic in pic_result4 %}
             <div class="box">
@@ -127,6 +122,6 @@
             </div>
             {% endfor %}
         </div>
-        {% endif %}
+    {% endif %}
         <!-- <img src="/static/images/3642/cart/000001.jpg"> -->
 </body>
